@@ -1,13 +1,16 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateInput, fetchRepoIssues, getIssuesError } from "./issuesSlice";
-import { Button } from "antd";
+import {
+  updateInput,
+  fetchRepoIssues,
+  getIssuesError,
+  updateError,
+} from "./issuesSlice";
+import { Button, Form, Input } from "antd";
 
 function SearchIssues() {
   const dispatch = useDispatch();
   const error = useSelector(getIssuesError);
   const { repoURLInput } = useSelector((state) => state.issues);
-  const [localError, setLocalError] = useState("");
 
   function handleInput(e) {
     dispatch(updateInput(e.target.value));
@@ -16,37 +19,48 @@ function SearchIssues() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!repoURLInput.trim()) {
-      setLocalError("Please enter a repoURL");
+      dispatch(updateError("Please enter a repo URL"));
       return;
     }
     const urlRegex = /^(https?:\/\/)?(www\.)?github\.com\/[\w-]+\/[\w-]+$/;
     if (!urlRegex.test(repoURLInput)) {
-      setLocalError("Please type a valid repo URL");
+      dispatch(
+        updateError(
+          "Please type a valid repo URL e.g. https://github.com/facebook/react"
+        )
+      );
       return;
     }
-    setLocalError("");
+    dispatch(updateError(null));
     try {
-      await dispatch(fetchRepoIssues());
+      await Promise.all([
+        dispatch(fetchRepoIssues({ issueState: "open", limit: 5 })),
+        dispatch(fetchRepoIssues({ issueState: "open&assignee=*", limit: 1 })),
+        dispatch(fetchRepoIssues({ issueState: "closed", limit: 3 })),
+      ]);
     } catch (error) {
       console.error("Error fetching issues:", error);
     }
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
+    <Form className="form">
+      <Form.Item>
+        <Input
           type="text"
           placeholder="Enter repo URL"
           value={repoURLInput}
           onChange={handleInput}
+          className="input"
         />
-        <button type="submit">Load issues</button>
-        {(error || localError) && (
-          <div style={{ color: "red" }}>{error || localError}</div>
-        )}
-      </form>
-    </div>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" onClick={handleSubmit}>
+          Load issues
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
 

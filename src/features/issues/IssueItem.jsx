@@ -1,17 +1,21 @@
 import React from "react";
 import { formatDate } from "../../utils/helpers";
+import { Card } from "antd";
 
 function IssueItem({ issue }) {
-  const { title, id, created_at: createdAt, user, number, comments } = issue;
+  const { title, created_at: createdAt, user, number, comments, id } = issue;
   return (
-    <li key={id}>
+    <Card className="issue-card" bordered={true} key={id}>
       <h4>{title}</h4>
       <span>#{number} </span>
       <span>{formatDate(createdAt)} </span>
-      <span>
-        {user.type} | Comments: {comments}
-      </span>
-    </li>
+      <div>
+        <span>
+          {user.type} | Comments: {comments}
+        </span>
+      </div>
+    </Card>
   );
 }
+
 export default IssueItem;

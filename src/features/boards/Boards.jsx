@@ -1,17 +1,20 @@
 import ToDo from "./ToDo";
 import InProgress from "./InProgress";
 import Done from "./Done";
-import RepoLink from "../issues/RepoLink";
+import { Col, Row } from "antd";
 
-function Boards() {
+export default function Boards() {
   return (
-    <>
-      <RepoLink />
-      <ToDo />
-      <InProgress />
-      <Done />
-    </>
+    <Row gutter={[16, 16]}>
+      <Col span={8}>
+        <ToDo />
+      </Col>
+      <Col span={8}>
+        <InProgress />
+      </Col>
+      <Col span={8}>
+        <Done />
+      </Col>
+    </Row>
   );
 }
-
-export default Boards;

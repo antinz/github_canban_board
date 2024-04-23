@@ -6,7 +6,6 @@ import "antd/dist/reset.css";
 import store from "./store.js";
 import { Provider } from "react-redux";
 import { ConfigProvider } from "antd";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ConfigProvider

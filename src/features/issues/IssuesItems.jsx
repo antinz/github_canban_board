@@ -1,17 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectAllIssues } from "./issuesSlice";
 import IssueItem from "./IssueItem";
+import { List } from "antd";
 
-function IssuesItems() {
-  const issues = useSelector(selectAllIssues);
-
+function IssuesItems({ issues }) {
   return (
-    <ul>
-      {issues.map((issue) => (
-        <IssueItem key={issue.id} issue={issue} />
-      ))}
-    </ul>
+    <List
+      itemLayout="vertical"
+      dataSource={issues}
+      renderItem={(issue) => <IssueItem issue={issue} />}
+    />
   );
 }
 
