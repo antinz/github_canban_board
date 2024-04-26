@@ -34,9 +34,9 @@ function SearchIssues() {
     dispatch(updateError(null));
     try {
       await Promise.all([
-        dispatch(fetchRepoIssues({ issueState: "open" })),
-        dispatch(fetchRepoIssues({ issueState: "open&assignee=*" })),
-        dispatch(fetchRepoIssues({ issueState: "closed" })),
+        dispatch(fetchRepoIssues({ issueState: "open", limit: 5 })),
+        dispatch(fetchRepoIssues({ issueState: "open&assignee=*", limit: 1 })),
+        dispatch(fetchRepoIssues({ issueState: "closed", limit: 3 })),
       ]);
     } catch (error) {
       console.error("Error fetching issues:", error);
@@ -45,27 +45,21 @@ function SearchIssues() {
 
   return (
     <Form className="form">
-      <div className="input-container">
-        <Form.Item className="input-item">
-          <Input
-            type="text"
-            placeholder="Enter repo URL"
-            value={repoURLInput}
-            onChange={handleInput}
-            className="input"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" onClick={handleSubmit} className="btn">
-            Load issues
-          </Button>
-        </Form.Item>
-      </div>
-      {error && (
-        <div style={{ color: "red", marginTop: "-15px", textAlign: "start" }}>
-          {error}
-        </div>
-      )}
+      <Form.Item>
+        <Input
+          type="text"
+          placeholder="Enter repo URL"
+          value={repoURLInput}
+          onChange={handleInput}
+          className="input"
+        />
+        {error && <div style={{ color: "red" }}>{error}</div>}
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" onClick={handleSubmit}>
+          Load issues
+        </Button>
+      </Form.Item>
     </Form>
   );
 }

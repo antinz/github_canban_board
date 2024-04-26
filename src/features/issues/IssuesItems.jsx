@@ -4,11 +4,18 @@ import { List } from "antd";
 
 function IssuesItems({ issues }) {
   return (
-    <List
-      itemLayout="vertical"
-      dataSource={issues}
-      renderItem={(issue) => <IssueItem issue={issue} />}
-    />
+    <div>
+      <List
+        itemLayout="vertical"
+        dataSource={issues}
+        renderItem={(issue, index) => (
+          <List.Item>
+            <IssueItem issue={issue} index={index} />
+          </List.Item>
+        )}
+        split={false}
+      />
+    </div>
   );
 }
 

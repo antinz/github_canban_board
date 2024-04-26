@@ -1,0 +1,17 @@
+.repo__link a {
+	text-transform: capitalize;
+}
+
+.issue-card {
+	width: 100%;
+}
+
+.form {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.form .input {
+	flex: 1;
+}

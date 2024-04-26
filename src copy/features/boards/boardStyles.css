@@ -1,0 +1,12 @@
+.board-container {
+	height: 35rem;
+	background-color: grey;
+	border: 3px solid black;
+	overflow-x: hidden;
+	padding: 1rem 1.5rem;
+	text-wrap: wrap;
+}
+
+h1 {
+	text-align: center;
+}

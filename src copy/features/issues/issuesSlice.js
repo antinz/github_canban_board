@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  repoURLInput: "https://github.com/facebook/react",
+  repoURLInput: "",
   openIssues: [],
   closedIssues: [],
   inProgressIssues: [],
@@ -25,21 +25,10 @@ export const fetchRepoIssues = createAsyncThunk(
       console.log(res.data, issueState);
       return { issueState, data: res.data };
     } catch (error) {
-      if (error.message === "Request failed with status code 404") {
-        return {
-          issueState,
-          error: "Invalid URL. The resource could not be found!",
-        };
-      } else {
-        return { issueState, error: error.message };
-      }
+      return { issueState, error: error.message };
     }
   }
 );
-
-export const reorderIssues = createAction("issues/reorderIssues");
-
-export const moveIssue = createAction("issues/moveIssue");
 
 const issuesSlice = createSlice({
   name: "issues",
@@ -94,29 +83,9 @@ const issuesSlice = createSlice({
         }
         state.repoURLInput = "";
       })
-      .addCase(reorderIssues, (state, action) => {
-        const { sourceIndex, destinationIndex, board } = action.payload;
-        if (!state[board]) {
-          console.error(`Board '${board}' does not exist in the state.`);
-          return;
-        }
-        const newBoard = [...state[board]];
-        const movedIssue = newBoard.splice(sourceIndex, 1)[0];
-        const updatedBoard = [
-          ...newBoard.slice(0, destinationIndex),
-          movedIssue,
-          ...newBoard.slice(destinationIndex),
-        ];
-        return {
-          ...state,
-          [board]: updatedBoard,
-        };
-      })
-      .addCase(moveIssue, (state, action) => {
-        const { sourceBoard, destinationBoard, sourceIndex, destinationIndex } =
-          action.payload;
-        const movedIssue = state[sourceBoard].splice(sourceIndex, 1)[0];
-        state[destinationBoard].splice(destinationIndex, 0, movedIssue);
+      .addCase(fetchRepoIssues.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
@@ -128,4 +97,5 @@ export const getClosedIssues = (state) => state.issues.closedIssues;
 export const getInProgressIssues = (state) => state.issues.inProgressIssues;
 
 export default issuesSlice.reducer;
-export const { updateInput, issuesAdded, updateError } = issuesSlice.actions;
+export const { updateInput, issuesAdded, updateError, issueState, limit } =
+  issuesSlice.actions;

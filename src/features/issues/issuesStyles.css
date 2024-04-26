@@ -2,16 +2,31 @@
 	text-transform: capitalize;
 }
 
+.input-container {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.input-item {
+	flex: 1;
+}
 .issue-card {
 	width: 100%;
 }
 
-.form {
-	display: flex;
-	justify-content: center;
-	gap: 1rem;
+.issue-card h4 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.form .input {
-	flex: 1;
+@media (max-width: 500px) {
+	.input-container {
+		flex-direction: column;
+		display: block;
+	}
+	.btn {
+		min-width: 100%;
+	}
 }
