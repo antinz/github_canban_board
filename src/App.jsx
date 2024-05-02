@@ -1,6 +1,6 @@
 import SearchIssues from "./features/issues/SearchIssues";
 import Boards from "./features/boards/Boards";
-import { Layout, Space } from "antd";
+import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import RepoLink from "./features/issues/RepoLink";
 import "./App.css";
@@ -17,7 +17,6 @@ function App() {
         <SearchIssues />
         <RepoLink />
         <Boards />
-        <Space />
       </Content>
     </Layout>
   );

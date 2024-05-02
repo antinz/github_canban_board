@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  repoURLInput: "https://github.com/facebook/react",
+  repoURLInput: "",
   openIssues: [],
   closedIssues: [],
   inProgressIssues: [],

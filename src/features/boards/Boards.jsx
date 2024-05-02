@@ -46,7 +46,7 @@ export default function Boards() {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} className="row">
         <Col span={colSpan}>
           <Board
             title="ToDo"
